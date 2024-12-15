@@ -1,0 +1,212 @@
+package app;
+
+import java.util.Random;
+
+public class DrawingApp {
+   
+	public static String getRectangle(int maxRows, int maxCols, char symbol) {
+		String holdRect = "";
+		//conditions for acceptable parameters
+		if (maxRows >= 1 && maxCols >= 1) {
+			//handles rows for the rectangle
+		 for (int i = 0; i < maxRows; i++) {
+			 //handles columns for the rectangle
+			 for (int j = 0; j < maxCols; j++) {
+				 holdRect += symbol;
+			 }
+			 holdRect += "\n";
+		 }
+		 return holdRect.trim();
+		}
+		//conditions for non-acceptable parameters 
+		else {
+			return null;
+		}
+		
+	}
+
+	public static String getFlag(int size, char color1, char color2, char color3) {
+		//conditions for non-acceptable parameters
+		 if (size < 3) {
+	            return null;
+	        }
+
+	        int rows = size * 2;
+	        int cols = size * 5;
+	        String holdFlag = "";
+
+	        //handles each row for the flag
+	        for (int i = 0; i < rows; i++) {
+	            String line = ""; 
+	            //handles first and last row of the flag
+	            if (i == 0 || i == rows - 1) {
+	                
+	                line += color1;
+	                for (int j = 1; j < cols; j++) {
+	                    line += color2;
+	                }
+	            } else if (i == rows / 2 - 1 || i == rows / 2) {
+	                //handles center rows
+	                for (int j = 0; j < size; j++) {
+	                    line += color1; 
+	                }
+	                for (int j = size; j < cols; j++) {
+	                    line += color2; 
+	                }
+	            } else if (i < size) {
+	                //handles increasing triangle made of color1 + color3 for the rest of the empty columns
+	                for (int j = 0; j <= i; j++) {
+	                    line += color1;
+	                }
+	                for (int j = i + 1; j < cols; j++) {
+	                    line += color3;
+	                }
+	            } else {
+	                //handles decreasing triangle made of color1 + color3 for the rest of the empty columns
+	                int decreasingSize = rows - i;
+	                for (int j = 0; j < decreasingSize; j++) {
+	                    line += color1;
+	                }
+	                for (int j = decreasingSize; j < cols; j++) {
+	                    line += color3;
+	                }
+	            }
+	            
+	            holdFlag += line;
+	            //iterates to new row
+	            if (i < rows - 1) {
+	                holdFlag += "\n";
+	            }
+	        }
+	        return holdFlag.trim();	
+	}
+
+	public static String getHorizontalBars(int maxRows, int maxCols, int bars, char color1, char color2, char color3) {
+		int calcBar = maxRows / bars;
+		String holdHorBar = "";
+		
+		//conditions for acceptable parameters 
+		if (calcBar >= 1 && (isValidColor(color1) == true && isValidColor(color2) == true && isValidColor(color3) == true)) {
+			//checks for how many times it has to make the pattern
+			while (bars != 0) {
+				//handles the rows
+				for (int i = 0; i < calcBar; i++) {
+					//handles the columns
+					for (int j = 0; j < maxCols; j++) {
+						holdHorBar += color1;
+					}
+					holdHorBar += "\n";
+				}
+				//makes sure to update bars to take care of while loop
+				bars -= 1;
+				//checks if pattern needs to be further added to holdHorBar
+				if (bars != 0) {
+				for (int k = 0; k < calcBar; k++) {
+					for (int l = 0; l < maxCols; l++) {
+						holdHorBar += color2;
+					}
+					holdHorBar += "\n";
+				}
+				bars -= 1;
+				}
+				//exits loop if no more of pattern is left to be added
+				else {
+					break;
+				}
+				if (bars != 0) {
+				for (int m = 0; m < calcBar; m++) {
+					for (int n = 0; n < maxCols; n++) {
+						holdHorBar += color3;
+					}
+					holdHorBar += "\n";
+				}
+				bars -= 1;
+				}
+				else {
+					break;
+				}
+			}
+			return holdHorBar.trim();
+		}
+		//if parameters are non-acceptable
+		else {
+			return null;
+		}
+			
+		
+	}
+
+	public static String getVerticalBars(int maxRows, int maxCols, int bars, char color1, char color2, char color3) {
+		int calculateBar = maxCols / bars;
+		int remainingCols = maxCols % bars;
+		String holdVertBar = "";
+			//conditions for acceptable parameters
+			if (calculateBar >= 1 && (isValidColor(color1) == true && isValidColor(color2) == true && isValidColor(color3) == true)) {
+				//handles rows
+				for (int r = 0; r < maxRows; r++) {
+					int colCounter = 0;
+					//handles columns
+					for (int b = 0; b < bars; b++) {
+						char currentColor;
+						//checks to see which column should be added at a particular column
+						if (b % 3 == 0) {
+							currentColor = color1;
+						} else if (b % 3 == 1) {
+							currentColor = color2;
+						} else {
+							currentColor = color3;
+						}
+						//adds the color at hand to the column
+						for (int c = 0; c < calculateBar; c++) {
+							holdVertBar += currentColor;
+							colCounter++;
+						}
+					}
+					holdVertBar += "\n";
+				}
+				return holdVertBar.trim();
+				}
+				else {
+					return null;
+			}
+	}
+		
+
+	public static char getRandomColor(Random random) {
+	    int ran = random.nextInt(6);
+		String option = "RGBY*.";
+		//checks to see which color associates with what random int generated
+	    if (ran == 0) {
+	    	return option.charAt(0);
+	    }
+	    else if (ran == 1) {
+	    	return option.charAt(1);
+	    }
+	    else if (ran == 2) {
+	    	return option.charAt(2);
+	    }
+	    else if (ran == 3) {
+	    	return option.charAt(3);
+	    }
+	    else if (ran == 4) {
+	    	return option.charAt(4);
+	    }
+	    else {
+	    	return option.charAt(5);
+	    }
+	}
+
+	private static boolean isValidColor(char color) 
+	{
+		//conditions for acceptable parameters
+		if (color == 'R' || color == 'G' || color == 'Y' || color == 'B' || color == '*' || color == '.') {
+			return true;
+		}
+		//conditions for non-acceptable parameters
+		else {
+			return false;
+		}
+	}
+	
+
+}
