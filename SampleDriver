@@ -1,0 +1,15 @@
+package app;
+import app.DrawingApp;
+
+public class SampleDriver {
+
+	public static void main(String[] args) {
+		int maxRows = 6, maxCols = 9;
+		char symbol = '*';
+		
+		String result = DrawingApp.getRectangle(maxRows, maxCols, symbol);
+		System.out.println(result);
+
+	}
+
+}
